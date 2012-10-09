@@ -1,0 +1,176 @@
+<!doctype html>  
+<html lang="en">
+	
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>Abyss - A Avgrund inspired abyss</title>
+		
+		<link href='http://fonts.googleapis.com/css?family=Nunito:300' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+		
+		<link rel="stylesheet" href="css/styles.css">
+		<link rel="stylesheet" href="css/abyss.css">
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="js/abyss.js"></script>
+		<script type="text/javascript" src="js/abyss-picture.js"></script>
+		
+		<script>
+			var loadedURLs = {};
+			var loadedElements = {};
+
+			function openPicture(url) 
+			{
+				var picture = loadedURLs[url];
+				if(typeof picture === 'undefined')
+				{
+					picture = new AbyssPicture(url);
+					loadedURLs[url] = picture;
+				}
+
+				picture.show();
+			}
+
+			function displayElement(id)
+			{
+				var abyss = loadedElements[id];
+
+				if(typeof abyss === 'undefined')
+				{
+					var element = document.getElementById(id);
+					abyss = new Abyss(element);
+
+					loadedElements[id] = abyss;
+				}
+
+				abyss.show();
+			}
+
+			function blowUp(id)
+			{
+				var abyss = loadedElements[id];
+				abyss.resize(800, 600);
+			}
+		</script>
+
+	</head>
+
+	<body>
+		<div id="custom-popup" class="abyss-popup">
+			<h1>Oh, hey there!</h1>
+			<p>I'm a static HTML element, nothing fancy... But, you can resize me!</p>
+			<button onclick="javascript:blowUp('custom-popup');">Resize</button>
+		</div>
+
+		<!-- Example code -->
+		<div id="example-one" class="abyss-popup">
+			<h1>Abyss with a custom element</h1>
+			<p>The following example creates a new Abyss with an element that is already in your DOM.</p>
+
+			<pre>
+<code>var element = document.getElementById('myElement');</code>
+<code>var abyss = new Abyss(element);</code>
+<code></code>
+<code>abyss.show(); // Displays the Abyss</code></pre>
+		</div>
+
+		<div id="example-two" class="abyss-popup">
+			<h1>Abyss without an element</h1>
+			<p>The following example creates a new Abyss which provides it's own HTML element to display content. The element created by the Abyss will be automatically added to the DOM.</p>
+
+			<pre>
+<code>var abyss = new Abyss();</code>
+<code>var element = abyss.element;</code>
+<code>element.innerHTML('&lt;h1&gt;Hello World!&lt;/h1&gt;');</code>
+<code></code>
+<code>abyss.show(); // Displays the Abyss</code></pre>
+		</div>
+
+		<div id="example-three" class="abyss-popup">
+			<h1>Displaying a picture</h1>
+			<p>To display a popup with a picture, you need to create a new <code>AbyssPicture</code> instance.</p>
+
+			<pre>
+<code>var picture = new AbyssPicture('http://the.url/to/the/image');</code>
+<code>picture.show();</code></pre>
+		</div>
+
+
+		<div id="license" class="abyss-popup">
+			<h1>License</h1>
+			<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+			of this software and associated documentation files (the "Software"), to deal
+			in the Software without restriction, including without limitation the rights
+			to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+			copies of the Software, and to permit persons to whom the Software is
+			furnished to do so, subject to the following conditions:<br /><br />
+			The above copyright notice and this permission notice shall be included in
+			all copies or substantial portions of the Software.<br /><br />
+			THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+			IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+			FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+			AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+			LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+			OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+			THE SOFTWARE.
+			</p>
+		</div>
+
+
+		<!-- Content -->
+		<div class="abyss-content content">
+			<div>
+				<h1>Abyss</h1>
+				<p>Abyss is a <a href="http://lab.hakim.se/avgrund/">Avgrund</a> inspired modal concept. It uses the same effect as Avgrund to give a sense of depth between the page and a displayed popup, however, unlike Avgrund it also works with sites which have more than a screenful of content and supports resizeable popups. It also comes with a handy helper that allows you to display images inside an Abyss, all with automatic resizing and everything.</p>
+				<p>Give it a spin by clicking one of the buttons below:</p>
+
+				<button onclick="javascript:openPicture('http://widerwille.com/screens/empire01.jpeg');">Show image popup</button>
+				<button onclick="javascript:displayElement('custom-popup');">Show element popup</button>
+			</div>
+
+			<div>
+				<h1>Usage</h1>
+				<p>To use Abyss you need to include <code>jQuery</code> and the <code>abyss.css</code> and <code>abyss.js</code> files. Additionally, if you want to use Abyss picture helper, you need to include <code>abyss-picture.js</code>.</p>
+				<p>Elements you want to display as popups should get the <code>abyss-popup</code> class assigned to which will automatically hide the element and enables the fade-in animation.</p>
+				<p>If you want to blur the background when an Abyss is displayed, you need to assing the <code>abyss-content</code> class to the element that hosts your sites content</p>
+				
+				<button onclick="javascript:displayElement('example-one');">Show example #1</button>
+				<button onclick="javascript:displayElement('example-two');">Show example #2</button>
+				<button onclick="javascript:displayElement('example-three');">Show example #3</button>
+
+				<h2>API</h2>
+				<p>An Abyss instance provides the following methods:</p>
+				<pre>
+<code>Abyss.show(); // Displays the Abyss.</code>
+<code>Abyss.close(); // Hides the Abyss.</code>
+<code>Abyss.resize(width, height); // Resizes the Abyss to the given size</code></pre>
+	
+				<p><code>show()</code> and <code>close()</code> are also available in the AbyssPicture class, <code>resize()</code> however is not.</p>	
+				<p>Additionally there are the following callbacks:</p>
+
+				<pre>
+<code>Abyss.onclose; // Invoked when the Abyss closes</code>
+<code>Abyss.onresize; // Invoked when the Abyss gets automatically</code>
+<code>// gets automatically resized.</code>
+<code>// If you implement this, you MUST call resize() with the new size yourself</code></pre>
+
+				<p>There are also the following properties available:</p>
+				<pre>
+<code>Abyss.element; // The element that the Abyss displays</code>
+<code>AbyssPicture.image; // The Image instance that contains the image to display</code>
+<code>AbyssPicture.abyss; // The Abyss instance that is used</code>
+<code>AbyssPicture.isLoaded; // true if the picture is loaded, otherwise false</code></pre>
+			</div>
+
+			<div>
+				<h1>License</h1>
+				<p>Abyss is licensed under the MIT license. The picture helper includes code from <a href="http://fgnass.github.com/spin.js/">Spin.js</a> by Felix Gnass which is also released under the MIT license.</p>
+				<button onclick="javascript:displayElement('license');">Show license text</button>
+			</div>
+
+			<a href="https://github.com/JustSid/Abyss"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+		</div>
+	</body>
+</html>
